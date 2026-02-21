@@ -1,0 +1,205 @@
+.libro-reclamaciones {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 24px 16px;
+  font-family: inherit;
+}
+
+.libro-reclamaciones__title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.libro-reclamaciones__subtitle {
+  color: #6d7175;
+  margin-bottom: 24px;
+}
+
+.libro-reclamaciones__section {
+  border: 1px solid #e1e3e5;
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 24px;
+}
+
+.libro-reclamaciones__section-title {
+  font-size: 1rem;
+  font-weight: 600;
+  padding: 0 8px;
+  color: #202223;
+}
+
+.libro-reclamaciones__row {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 10px 0;
+  border-bottom: 1px dashed #e1e3e5;
+}
+
+.libro-reclamaciones__row:last-child {
+  border-bottom: none;
+}
+
+.libro-reclamaciones__row label {
+  font-size: 0.875rem;
+  color: #6d7175;
+}
+
+.libro-reclamaciones__row input[type="text"],
+.libro-reclamaciones__row input[type="email"],
+.libro-reclamaciones__row input[type="tel"],
+.libro-reclamaciones__row input[type="number"],
+.libro-reclamaciones__row select,
+.libro-reclamaciones__row textarea {
+  width: 100%;
+  padding: 8px 12px;
+  border: 1px solid #c9cccf;
+  border-radius: 6px;
+  font-size: 0.9375rem;
+  color: #202223;
+  background: #fff;
+  box-sizing: border-box;
+  transition: border-color 0.15s;
+}
+
+.libro-reclamaciones__row input:focus,
+.libro-reclamaciones__row select:focus,
+.libro-reclamaciones__row textarea:focus {
+  outline: none;
+  border-color: #008060;
+  box-shadow: 0 0 0 2px rgba(0, 128, 96, 0.15);
+}
+
+.libro-reclamaciones__row input[type="file"] {
+  padding: 4px 0;
+  border: none;
+}
+
+.libro-reclamaciones__row small {
+  font-size: 0.75rem;
+  color: #8c9196;
+}
+
+.libro-reclamaciones__row--block {
+  flex-direction: column !important;
+  align-items: flex-start !important;
+}
+
+.libro-reclamaciones__row--block > label:first-child {
+  flex: none !important;
+  padding-top: 0 !important;
+  margin-bottom: 4px;
+}
+
+.libro-reclamaciones__row--block textarea {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.libro-reclamaciones__optional {
+  color: #8c9196;
+  font-weight: 400;
+  font-size: 0.8125rem;
+}
+
+.libro-reclamaciones__radio-group {
+  display: flex;
+  gap: 16px;
+  padding: 4px 0;
+}
+
+.libro-reclamaciones__radio-group label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #202223;
+  cursor: pointer;
+}
+
+.libro-reclamaciones__consent {
+  margin-bottom: 20px;
+}
+
+.libro-reclamaciones__consent label {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  font-size: 0.875rem;
+  color: #202223;
+  cursor: pointer;
+}
+
+.libro-reclamaciones__consent input[type="checkbox"] {
+  margin-top: 2px;
+  flex-shrink: 0;
+}
+
+.libro-reclamaciones__actions {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.libro-reclamaciones__submit {
+  background-color: #008060;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 12px 28px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.15s;
+}
+
+.libro-reclamaciones__submit:hover {
+  background-color: #006e52;
+}
+
+.libro-reclamaciones__submit:disabled {
+  background-color: #c9cccf;
+  cursor: not-allowed;
+}
+
+.libro-reclamaciones__message {
+  margin-top: 16px;
+  padding: 12px 16px;
+  border-radius: 6px;
+  font-size: 0.9375rem;
+}
+
+.libro-reclamaciones__message--success {
+  background-color: #f0fff8;
+  border: 1px solid #008060;
+  color: #006e52;
+}
+
+.libro-reclamaciones__message--error {
+  background-color: #fff4f4;
+  border: 1px solid #d82c0d;
+  color: #d82c0d;
+}
+
+@media (min-width: 640px) {
+  .libro-reclamaciones__row {
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 16px;
+  }
+
+  .libro-reclamaciones__row > label:first-child {
+    flex: 0 0 220px;
+    padding-top: 10px;
+  }
+
+  .libro-reclamaciones__row input[type="text"],
+  .libro-reclamaciones__row input[type="email"],
+  .libro-reclamaciones__row input[type="tel"],
+  .libro-reclamaciones__row input[type="number"],
+  .libro-reclamaciones__row select,
+  .libro-reclamaciones__row textarea {
+    flex: 1;
+  }
+}

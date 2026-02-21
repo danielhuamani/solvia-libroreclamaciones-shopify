@@ -1,0 +1,217 @@
+{{ 'libro-reclamaciones.css' | asset_url | stylesheet_tag }}
+{{ 'libro-reclamaciones.js' | asset_url | script_tag }}
+
+<div class="libro-reclamaciones" id="libro-reclamaciones-{{ block.id }}">
+  <h2 class="libro-reclamaciones__title">{{ block.settings.title }}</h2>
+  {% if block.settings.subtitle != blank %}
+    <p class="libro-reclamaciones__subtitle">{{ block.settings.subtitle }}</p>
+  {% endif %}
+
+  <form
+    class="libro-reclamaciones__form"
+    id="form-reclamo-{{ block.id }}"
+    action="{{ block.settings.form_action | default: '/apps/reclamos/submit' }}"
+    method="POST"
+    enctype="multipart/form-data"
+    novalidate
+  >
+    <input type="hidden" name="shop" value="{{ shop.permanent_domain }}">
+    <input type="hidden" name="block_id" value="{{ block.id }}">
+
+    <!-- SECCIÓN 1: Información del consumidor -->
+    <fieldset class="libro-reclamaciones__section">
+      <legend class="libro-reclamaciones__section-title">&#128100; Información del consumidor</legend>
+
+      <div class="libro-reclamaciones__row">
+        <label for="tipo_persona_{{ block.id }}">Tipo de persona:</label>
+        <select id="tipo_persona_{{ block.id }}" name="tipo_persona" required>
+          <option value="">Seleccionar</option>
+          <option value="Natural">Natural</option>
+          <option value="Jurídica">Jurídica</option>
+        </select>
+      </div>
+
+      <div class="libro-reclamaciones__row">
+        <label for="tipo_doc_{{ block.id }}">Documento de Identidad:</label>
+        <select id="tipo_doc_{{ block.id }}" name="tipo_documento" required>
+          <option value="">Seleccionar</option>
+          <option value="DNI">DNI</option>
+          <option value="CE">Carné de Extranjería</option>
+          <option value="Pasaporte">Pasaporte</option>
+          <option value="RUC">RUC</option>
+        </select>
+      </div>
+
+      <div class="libro-reclamaciones__row">
+        <label for="num_doc_{{ block.id }}">Numero de documento:</label>
+        <input type="text" id="num_doc_{{ block.id }}" name="numero_documento" required maxlength="20" placeholder="Ej: 72773489">
+      </div>
+
+      <div class="libro-reclamaciones__row">
+        <label for="nombres_{{ block.id }}">Nombres:</label>
+        <input type="text" id="nombres_{{ block.id }}" name="nombres" required maxlength="100">
+      </div>
+
+      <div class="libro-reclamaciones__row">
+        <label for="apellidos_{{ block.id }}">Apellidos:</label>
+        <input type="text" id="apellidos_{{ block.id }}" name="apellidos" required maxlength="100">
+      </div>
+
+      <div class="libro-reclamaciones__row">
+        <label>Es menor de edad:</label>
+        <div class="libro-reclamaciones__radio-group">
+          <label><input type="radio" name="es_menor" value="Si" required> Sí</label>
+          <label><input type="radio" name="es_menor" value="No"> No</label>
+        </div>
+      </div>
+
+      <div class="libro-reclamaciones__row">
+        <label for="departamento_{{ block.id }}">Departamento:</label>
+        <input type="text" id="departamento_{{ block.id }}" name="departamento" required maxlength="100">
+      </div>
+
+      <div class="libro-reclamaciones__row">
+        <label for="provincia_{{ block.id }}">Provincia:</label>
+        <input type="text" id="provincia_{{ block.id }}" name="provincia" required maxlength="100">
+      </div>
+
+      <div class="libro-reclamaciones__row">
+        <label for="distrito_{{ block.id }}">Distrito:</label>
+        <input type="text" id="distrito_{{ block.id }}" name="distrito" required maxlength="100">
+      </div>
+
+      <div class="libro-reclamaciones__row">
+        <label for="direccion_{{ block.id }}">Direccion:</label>
+        <input type="text" id="direccion_{{ block.id }}" name="direccion" required maxlength="255">
+      </div>
+
+      <div class="libro-reclamaciones__row">
+        <label for="email_{{ block.id }}">Email:</label>
+        <input type="email" id="email_{{ block.id }}" name="email" required maxlength="150">
+      </div>
+
+      <div class="libro-reclamaciones__row">
+        <label for="telefono_{{ block.id }}">Numero de teléfono:</label>
+        <input type="tel" id="telefono_{{ block.id }}" name="telefono" required maxlength="20" placeholder="Ej: +51 987 876 767">
+      </div>
+    </fieldset>
+
+    <!-- SECCIÓN 2: Identificación del bien -->
+    <fieldset class="libro-reclamaciones__section">
+      <legend class="libro-reclamaciones__section-title">&#128100; Identificación del bien</legend>
+
+      <div class="libro-reclamaciones__row">
+        <label for="tipo_bien_{{ block.id }}">Tipo de bien:</label>
+        <select id="tipo_bien_{{ block.id }}" name="tipo_bien" required>
+          <option value="">Seleccionar</option>
+          <option value="Producto">Producto</option>
+          <option value="Servicio">Servicio</option>
+        </select>
+      </div>
+
+      <div class="libro-reclamaciones__row">
+        <label for="descripcion_producto_{{ block.id }}">Descripción del producto:</label>
+        <input type="text" id="descripcion_producto_{{ block.id }}" name="descripcion_producto" required maxlength="255">
+      </div>
+
+      <div class="libro-reclamaciones__row">
+        <label for="tipo_comprobante_{{ block.id }}">Tipo de comprobante:</label>
+        <select id="tipo_comprobante_{{ block.id }}" name="tipo_comprobante">
+          <option value="">Seleccionar</option>
+          <option value="Boleta de venta">Boleta de venta</option>
+          <option value="Factura">Factura</option>
+          <option value="Ticket">Ticket</option>
+          <option value="Otro">Otro</option>
+        </select>
+      </div>
+
+      <div class="libro-reclamaciones__row">
+        <label for="num_comprobante_{{ block.id }}">Numero de comprobante:</label>
+        <input type="text" id="num_comprobante_{{ block.id }}" name="numero_comprobante" maxlength="50" placeholder="Ej: SD0232333">
+      </div>
+
+      <div class="libro-reclamaciones__row">
+        <label for="monto_{{ block.id }}">Monto de reclamo:</label>
+        <input type="number" id="monto_{{ block.id }}" name="monto" min="0" step="0.01" placeholder="Ej: 233.52">
+      </div>
+    </fieldset>
+
+    <!-- SECCIÓN 3: Reclamación y pedido -->
+    <fieldset class="libro-reclamaciones__section">
+      <legend class="libro-reclamaciones__section-title">&#128100; Reclamación y pedido</legend>
+
+      <div class="libro-reclamaciones__row">
+        <label for="tipo_reclamo_{{ block.id }}">Tipo de reclamo:</label>
+        <select id="tipo_reclamo_{{ block.id }}" name="tipo_reclamo" required>
+          <option value="">Seleccionar</option>
+          <option value="Reclamo">Reclamo</option>
+          <option value="Queja">Queja</option>
+        </select>
+      </div>
+
+      <div class="libro-reclamaciones__row libro-reclamaciones__row--block">
+        <label for="detalle_{{ block.id }}">Detalle del reclamo:</label>
+        <textarea id="detalle_{{ block.id }}" name="detalle" rows="8" required maxlength="2000" placeholder="Describe detalladamente tu reclamo o queja..."></textarea>
+      </div>
+
+      <div class="libro-reclamaciones__row libro-reclamaciones__row--block">
+        <label for="pedido_{{ block.id }}">Pedido:</label>
+        <textarea id="pedido_{{ block.id }}" name="pedido" rows="4" maxlength="1000" placeholder="Indica qué solución esperas..."></textarea>
+      </div>
+
+      <div class="libro-reclamaciones__row libro-reclamaciones__row--block">
+        <label for="documentos_{{ block.id }}">Adjuntar documentos <span class="libro-reclamaciones__optional">(opcional)</span></label>
+        <input type="file" id="documentos_{{ block.id }}" name="documentos[]" multiple accept=".pdf,.jpg,.jpeg,.png">
+        <small>Formatos permitidos: PDF, JPG, PNG. Máx. 5 MB por archivo.</small>
+      </div>
+    </fieldset>
+
+    <div class="libro-reclamaciones__consent">
+      <label>
+        <input type="checkbox" name="acepta_terminos" required>
+        Acepto que mis datos sean tratados conforme a la política de privacidad de la tienda.
+      </label>
+    </div>
+
+    <div class="libro-reclamaciones__actions">
+      <button type="submit" class="libro-reclamaciones__submit">
+        {{ block.settings.button_label | default: 'Enviar reclamo' }}
+      </button>
+    </div>
+
+    <div class="libro-reclamaciones__message" id="reclamo-message-{{ block.id }}" aria-live="polite" hidden></div>
+  </form>
+</div>
+
+{% schema %}
+{
+  "name": "Libro de Reclamaciones",
+  "target": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Título del formulario",
+      "default": "Libro de Reclamaciones"
+    },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Subtítulo",
+      "default": "Registra aquí tu reclamo o queja."
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Texto del botón",
+      "default": "Enviar reclamo"
+    },
+    {
+      "type": "url",
+      "id": "form_action",
+      "label": "URL de envío del formulario"
+    }
+  ]
+}
+{% endschema %}
+

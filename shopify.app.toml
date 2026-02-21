@@ -1,7 +1,7 @@
 # Learn more about configuring your app at https://shopify.dev/docs/apps/tools/cli/configuration
 
 client_id = "e96e539290af5c4ef303515999d33c23"
-name = "solvia-libro-reclamaciones"
+name = "Solvia"
 application_url = "https://example.com"
 embedded = true
 
