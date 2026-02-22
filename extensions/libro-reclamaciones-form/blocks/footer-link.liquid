@@ -1,0 +1,24 @@
+<a href="{{ block.settings.page_url | default: '/pages/libro-de-reclamaciones' }}" class="libro-rec-footer-link">
+  {{ block.settings.link_text | default: 'Libro de Reclamaciones' }}
+</a>
+
+{% schema %}
+{
+  "name": "Libro de Reclamaciones - Link",
+  "target": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "link_text",
+      "label": "Texto del enlace",
+      "default": "Libro de Reclamaciones"
+    },
+    {
+      "type": "url",
+      "id": "page_url",
+      "label": "URL de la página",
+      "default": "/pages/libro-de-reclamaciones"
+    }
+  ]
+}
+{% endschema %}
