@@ -1,8 +1,20 @@
-import { json } from "react-router";
+const corsHeaders = {
+  "Access-Control-Allow-Origin": "*",
+  "Access-Control-Allow-Methods": "POST, OPTIONS",
+  "Access-Control-Allow-Headers": "Content-Type, Accept",
+};
+
+function jsonResponse(data, status = 200) {
+  return new Response(JSON.stringify(data), {
+    status,
+    headers: { "Content-Type": "application/json", ...corsHeaders },
+  });
+}
+
 
 export async function action({ request }) {
   if (request.method !== "POST") {
-    return json({ error: "Method not allowed" }, { status: 405 });
+    return jsonResponse({ error: "Method not allowed" }, 405);
   }
 
   const contentType = request.headers.get("content-type") || "";
@@ -35,10 +47,7 @@ export async function action({ request }) {
 
   const missing = required.filter((f) => !data[f]);
   if (missing.length > 0) {
-    return json(
-      { error: `Campos requeridos faltantes: ${missing.join(", ")}` },
-      { status: 400 }
-    );
+    return jsonResponse({ error: `Campos requeridos faltantes: ${missing.join(", ")}` }, 400);
   }
 
   const complaint = {
@@ -76,21 +85,13 @@ export async function action({ request }) {
 
   console.log("[Libro de Reclamaciones] Nuevo reclamo recibido:", complaint);
 
-  return json(
+  return jsonResponse(
     {
       success: true,
       id: complaint.id,
-      message:
-        "¡Reclamo enviado exitosamente! Recibirás una confirmación en tu email en breve.",
+      message: "¡Reclamo enviado exitosamente! Recibirás una confirmación en tu email en breve.",
     },
-    {
-      status: 201,
-      headers: {
-        "Access-Control-Allow-Origin": "*",
-        "Access-Control-Allow-Methods": "POST, OPTIONS",
-        "Access-Control-Allow-Headers": "Content-Type, Accept",
-      },
-    }
+    201
   );
 }
 
@@ -105,5 +106,5 @@ export async function loader({ request }) {
       },
     });
   }
-  return json({ error: "Not found" }, { status: 404 });
+  return jsonResponse({ error: "Not found" }, 404);
 }

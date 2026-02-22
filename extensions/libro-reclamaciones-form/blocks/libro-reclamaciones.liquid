@@ -1,5 +1,4 @@
 {{ 'libro-reclamaciones.css' | asset_url | stylesheet_tag }}
-{{ 'libro-reclamaciones.js' | asset_url | script_tag }}
 
 <div class="libro-reclamaciones" id="libro-reclamaciones-{{ block.id }}">
   <h2 class="libro-reclamaciones__title">{{ block.settings.title }}</h2>
@@ -174,7 +173,7 @@
     </div>
 
     <div class="libro-reclamaciones__actions">
-      <button type="submit" class="libro-reclamaciones__submit">
+      <button type="submit" class="libro-reclamaciones__submit" data-label="{{ block.settings.button_label | default: 'Enviar reclamo' }}">
         {{ block.settings.button_label | default: 'Enviar reclamo' }}
       </button>
     </div>
@@ -182,6 +181,44 @@
     <div class="libro-reclamaciones__message" id="reclamo-message-{{ block.id }}" aria-live="polite" hidden></div>
   </form>
 </div>
+
+<script>
+(function() {
+  var form = document.getElementById('form-reclamo-{{ block.id }}');
+  if (!form) return;
+  var messageEl = document.getElementById('reclamo-message-{{ block.id }}');
+  var submitBtn = form.querySelector('.libro-reclamaciones__submit');
+
+  form.addEventListener('submit', function(e) {
+    e.preventDefault();
+    if (!form.checkValidity()) { form.reportValidity(); return; }
+
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Enviando...';
+    messageEl.hidden = true;
+    messageEl.className = 'libro-reclamaciones__message';
+
+    var formData = new FormData(form);
+    fetch(form.action, { method: 'POST', body: formData, headers: { 'Accept': 'application/json' } })
+      .then(function(res) { if (!res.ok) throw new Error('Error al enviar.'); return res.json(); })
+      .then(function(data) {
+        messageEl.textContent = data.message || '¡Reclamo enviado exitosamente!';
+        messageEl.classList.add('libro-reclamaciones__message--success');
+        messageEl.hidden = false;
+        form.reset();
+      })
+      .catch(function(err) {
+        messageEl.textContent = err.message || 'Ocurrió un error. Intenta nuevamente.';
+        messageEl.classList.add('libro-reclamaciones__message--error');
+        messageEl.hidden = false;
+      })
+      .finally(function() {
+        submitBtn.disabled = false;
+        submitBtn.textContent = submitBtn.dataset.label || 'Enviar reclamo';
+      });
+  });
+})();
+</script>
 
 {% schema %}
 {
@@ -214,4 +251,3 @@
   ]
 }
 {% endschema %}
-
