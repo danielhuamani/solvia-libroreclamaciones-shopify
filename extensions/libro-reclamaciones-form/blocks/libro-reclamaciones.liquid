@@ -1,6 +1,6 @@
 {{ 'libro-reclamaciones.css' | asset_url | stylesheet_tag }}
 
-<div class="libro-reclamaciones" id="libro-reclamaciones-{{ block.id }}">
+<div class="libro-reclamaciones" id="libro-reclamaciones-{{ block.id }}" data-block-id="{{ block.id }}" data-shop="{{ shop.permanent_domain }}">
   <h2 class="libro-reclamaciones__title">{{ block.settings.title }}</h2>
   {% if block.settings.subtitle != blank %}
     <p class="libro-reclamaciones__subtitle">{{ block.settings.subtitle }}</p>
@@ -9,7 +9,6 @@
   <form
     class="libro-reclamaciones__form"
     id="form-reclamo-{{ block.id }}"
-    action="{{ block.settings.form_action | default: '/apps/reclamos' }}"
     method="POST"
     enctype="multipart/form-data"
     novalidate
@@ -160,7 +159,7 @@
 
       <div class="libro-reclamaciones__row libro-reclamaciones__row--block">
         <label for="documentos_{{ block.id }}">Adjuntar documentos <span class="libro-reclamaciones__optional">(opcional)</span></label>
-        <input type="file" id="documentos_{{ block.id }}" name="documentos[]" multiple accept=".pdf,.jpg,.jpeg,.png">
+        <input type="file" id="documentos_{{ block.id }}" name="documentos" multiple accept=".pdf,.jpg,.jpeg,.png">
         <small>Formatos permitidos: PDF, JPG, PNG. Máx. 5 MB por archivo.</small>
       </div>
     </fieldset>
@@ -173,52 +172,16 @@
     </div>
 
     <div class="libro-reclamaciones__actions">
-      <button type="submit" class="libro-reclamaciones__submit" data-label="{{ block.settings.button_label | default: 'Enviar reclamo' }}">
+      <button id="btn-submit-{{ block.id }}" type="submit" class="libro-reclamaciones__submit" data-label="{{ block.settings.button_label | default: 'Enviar reclamo' }}">
         {{ block.settings.button_label | default: 'Enviar reclamo' }}
       </button>
     </div>
 
-    <div class="libro-reclamaciones__message" id="reclamo-message-{{ block.id }}" aria-live="polite" hidden></div>
+    <div class="libro-reclamaciones__message" id="reclamo-message-{{ block.id }}" aria-live="polite"></div>
   </form>
 </div>
 
-<script>
-(function() {
-  var form = document.getElementById('form-reclamo-{{ block.id }}');
-  if (!form) return;
-  var messageEl = document.getElementById('reclamo-message-{{ block.id }}');
-  var submitBtn = form.querySelector('.libro-reclamaciones__submit');
-
-  form.addEventListener('submit', function(e) {
-    e.preventDefault();
-    if (!form.checkValidity()) { form.reportValidity(); return; }
-
-    submitBtn.disabled = true;
-    submitBtn.textContent = 'Enviando...';
-    messageEl.hidden = true;
-    messageEl.className = 'libro-reclamaciones__message';
-
-    var formData = new FormData(form);
-    fetch(form.action, { method: 'POST', body: formData, headers: { 'Accept': 'application/json' } })
-      .then(function(res) { if (!res.ok) throw new Error('Error al enviar.'); return res.json(); })
-      .then(function(data) {
-        messageEl.textContent = data.message || '¡Reclamo enviado exitosamente!';
-        messageEl.classList.add('libro-reclamaciones__message--success');
-        messageEl.hidden = false;
-        form.reset();
-      })
-      .catch(function(err) {
-        messageEl.textContent = err.message || 'Ocurrió un error. Intenta nuevamente.';
-        messageEl.classList.add('libro-reclamaciones__message--error');
-        messageEl.hidden = false;
-      })
-      .finally(function() {
-        submitBtn.disabled = false;
-        submitBtn.textContent = submitBtn.dataset.label || 'Enviar reclamo';
-      });
-  });
-})();
-</script>
+<script src="{{ 'libro-reclamaciones.js' | asset_url }}" defer></script>
 
 {% schema %}
 {
@@ -242,11 +205,6 @@
       "id": "button_label",
       "label": "Texto del botón",
       "default": "Enviar reclamo"
-    },
-    {
-      "type": "url",
-      "id": "form_action",
-      "label": "URL de envío del formulario"
     }
   ]
 }
